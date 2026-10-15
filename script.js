@@ -1,6 +1,6 @@
 /* ===== CONFIGURAÇÕES DA LOJA ===== */
 // Número com 55 + DDD + número, só dígitos. Ex.: 5519999999999
-const WHATSAPP = "5519999999999";
+const WHATSAPP = "5519998486853";
 
 /* ===== CARDÁPIO =====
    Para ADICIONAR um item: copie uma linha { ... } e altere os dados.
