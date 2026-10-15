@@ -11,7 +11,7 @@ const WHATSAPP = "5519998486853";
 const PRODUTOS = [
   { nome: "Coca-Cola Lata", descricao: "Normal/Zero", preco: 7.00, imagem: "", ativo: true },
   { nome: "KitKat",         descricao: "",               preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", ativo: true },
-  { nome: "Trento Massimo", descricao: "Chocolate 25g",  preco: 4.00, imagem: "", ativo: true },
+  { nome: "Trento Massimo", descricao: "Chocolate 25g",  preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", ativo: true },
   { nome: "Ouro Branco",    descricao: "",               preco: 3.00, imagem: "", ativo: true },
 ];
 
