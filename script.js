@@ -10,7 +10,7 @@ const WHATSAPP = "5519998486853";
    (deixe "" para não mostrar foto) */
 const PRODUTOS = [
   { nome: "Coca-Cola Lata", descricao: "Normal/Zero", preco: 7.00, imagem: "", ativo: true },
-  { nome: "KitKat",         descricao: "",               preco: 6.00, imagem: "https://superkan.com.br/chocolate-kit-kat-nestle-415g/7613033353321/d", ativo: true },
+  { nome: "KitKat",         descricao: "",               preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", ativo: true },
   { nome: "Trento Massimo", descricao: "Chocolate 25g",  preco: 4.00, imagem: "", ativo: true },
   { nome: "Ouro Branco",    descricao: "",               preco: 3.00, imagem: "", ativo: true },
 ];
