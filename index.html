@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#040b14">
+  <title>OpenBox | Cardápio</title>
+  <meta name="description" content="Cardápio OpenBox: Coca-Cola gelada, KitKat, Trento Massimo e Ouro Branco. Peça pelo WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,700;0,800;1,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="logo" aria-label="OpenBox">
+      <span class="logo-open">Open</span><span class="logo-box">Box</span>
+      <svg class="logo-cubo" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 4 58 18v28L32 60 6 46V18Z" fill="#1fa7ff"/>
+        <path d="M32 4 58 18 32 32 6 18Z" fill="#6fd0ff"/>
+        <path d="M12 22v20l16 9V31Z" fill="#040b14" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1 class="titulo">CARDÁPIO</h1>
+    <p class="horario">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Atendimento das <strong>11h55 às 12h55</strong>
+    </p>
+  </header>
+
+  <main>
+    <ul id="cardapio" class="lista"></ul>
+    <p class="dica">Toque em <strong>+</strong> para montar seu pedido.</p>
+  </main>
+
+  <footer class="rodape">
+    <a id="btn-geral" class="btn-zap-texto" href="#" target="_blank" rel="noopener">Prefere conversar? Fale com a gente no WhatsApp</a>
+    <p>OpenBox · Coca-Cola gelada e doces para o seu almoço</p>
+  </footer>
+
+  <div id="barra-pedido" class="barra" hidden>
+    <div class="barra-info"><span id="barra-qtd"></span><strong id="barra-total"></strong></div>
+    <a id="btn-pedido" class="btn-zap" href="#" target="_blank" rel="noopener">Enviar pedido no WhatsApp</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
