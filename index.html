@@ -16,11 +16,36 @@
     <header class="topo">
       <img class="logo" src="logo.png" alt="OpenBox">
       <h1>Cardápio</h1>
-      <p>Escolha o que quiser e mande o pedido pelo WhatsApp. Atendemos das <strong>11h55 às 12h55</strong>.</p>
+      <p>Atendimento das <strong>11h55 às 12h55</strong></p>
     </header>
 
     <main>
+      <div class="busca">
+        <label class="campo">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="busca" type="search" placeholder="Buscar produto" aria-label="Buscar produto por nome ou tipo" autocomplete="off">
+        </label>
+        <button id="btn-filtro" class="btn-filtro" type="button" aria-expanded="false" aria-controls="painel-filtro">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+          Filtros <span id="filtro-badge" class="badge" hidden>0</span>
+        </button>
+      </div>
+
+      <div id="painel-filtro" class="painel" hidden>
+        <div class="grupo">
+          <span class="rotulo">Tipo do produto</span>
+          <div id="chips-tipo" class="chips"></div>
+        </div>
+        <div class="grupo">
+          <label class="rotulo" for="preco-max">Valor</label>
+          <div class="preco-campo">Até R$ <input id="preco-max" type="text" inputmode="decimal" placeholder="ex.: 5" autocomplete="off"></div>
+        </div>
+        <label class="chk"><input id="so-promo" type="checkbox"> Mostrar só promoções</label>
+        <button id="limpar" class="limpar" type="button">Limpar filtros</button>
+      </div>
+
       <ul id="cardapio" class="lista"></ul>
+      <p id="vazio" class="vazio" hidden>Nenhum produto encontrado. Tente outra busca ou limpe os filtros.</p>
       <section class="acoes" aria-label="Fale com a gente">
         <p>Quer falar com a gente ou não achou o que procurava?</p>
         <div class="acoes-botoes">

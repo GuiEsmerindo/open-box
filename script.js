@@ -8,15 +8,16 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
    Para ADICIONAR um item: copie uma linha { ... } e altere os dados.
    Para REMOVER: apague a linha inteira.
    Para deixar de vender temporariamente: coloque  ativo: false
-   Para mostrar foto: coloque o nome do arquivo (ex.: "kitkat.jpg") ou o link da imagem.
-   Para PROMOÇÃO: promo: { qtd: 4, preco: 10.00 }  → "leve 4 por R$ 10,00"
-   (sem promoção: promo: null)
-   A promoção vale a cada grupo completo: 8 unidades = 2 grupos de 4. */
+   tipo: classificação do produto (ex.: "Bebida", "Chocolate", "Salgado").
+         Ela aparece no filtro e também entra na busca.
+   imagem: link da imagem ou nome do arquivo (deixe "" para não mostrar foto).
+   promo: { qtd: 4, preco: 10.00 } → "leve 4 por R$ 10,00"  (sem promoção: null)
+          A promoção vale a cada grupo completo: 8 unidades = 2 grupos de 4. */
 const PRODUTOS = [
-  { nome: "Coca-Cola Lata", descricao: "Normal ou Zero", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null,                      ativo: true },
-  { nome: "KitKat",         descricao: "",               preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 },  ativo: true },
-  { nome: "Trento Massimo Choc/ 25g", descricao: "",  preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null,                      ativo: true },
-  { nome: "Ouro Branco",    descricao: "",               preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 },  ativo: true },
+  { nome: "Coca-Cola Lata", descricao: "Normal ou Zero", tipo: "Bebida", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null, ativo: true },
+  { nome: "KitKat", descricao: "", tipo: "Chocolate", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
+  { nome: "Trento Massimo Choc/ 25g", descricao: "", tipo: "Chocolate", preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null, ativo: true },
+  { nome: "Ouro Branco", descricao: "", tipo: "Chocolate", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
 ];
 
 /* ===== CÓDIGO (não precisa mexer daqui para baixo) ===== */
@@ -25,6 +26,7 @@ const lista = document.getElementById("cardapio");
 const btnPedido = document.getElementById("btn-pedido");
 const itens = PRODUTOS.filter(p => p.ativo !== false);
 const qtds = itens.map(() => 0);
+const lis = [];
 
 const link = texto => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 document.getElementById("btn-geral").href = link("Olá, OpenBox! Gostaria de fazer um pedido.");
@@ -67,6 +69,7 @@ itens.forEach((p, i) => {
       <button type="button" class="mais" aria-label="Adicionar ${p.nome}" data-i="${i}" data-d="1">+</button>
     </div>`;
   lista.appendChild(li);
+  lis.push(li);
 });
 
 lista.addEventListener("click", e => {
@@ -104,4 +107,80 @@ function atualizar() {
     `\n\n*Total: ${brl(total)}*`;
   btnPedido.href = link(msg);
 }
+
+/* ===== BUSCA E FILTROS ===== */
+const norm = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const filtro = { texto: "", tipo: "", precoMax: null, soPromo: false };
+
+function passa(p, f) {
+  if (f.tipo && p.tipo !== f.tipo) return false;
+  if (f.precoMax !== null && p.preco > f.precoMax) return false;
+  if (f.soPromo && !p.promo) return false;
+  const alvo = norm([p.nome, p.descricao, p.tipo].join(" "));
+  return norm(f.texto).split(/\s+/).filter(Boolean).every(w => alvo.includes(w));
+}
+
+const painel = document.getElementById("painel-filtro");
+const btnFiltro = document.getElementById("btn-filtro");
+const badge = document.getElementById("filtro-badge");
+const chipsTipo = document.getElementById("chips-tipo");
+const campoPreco = document.getElementById("preco-max");
+const chkPromo = document.getElementById("so-promo");
+
+function aplicarFiltros() {
+  let visiveis = 0;
+  itens.forEach((p, i) => {
+    const ok = passa(p, filtro);
+    lis[i].hidden = !ok;
+    if (ok) visiveis++;
+  });
+  document.getElementById("vazio").hidden = visiveis > 0;
+  const ativos = (filtro.tipo ? 1 : 0) + (filtro.precoMax !== null ? 1 : 0) + (filtro.soPromo ? 1 : 0);
+  badge.textContent = ativos;
+  badge.hidden = ativos === 0;
+}
+
+// Chips de tipo, criados a partir dos produtos
+const tipos = [...new Set(itens.map(p => p.tipo).filter(Boolean))];
+["", ...tipos].forEach(t => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "chip";
+  b.dataset.tipo = t;
+  b.textContent = t || "Todos";
+  b.setAttribute("aria-pressed", t === "" ? "true" : "false");
+  chipsTipo.appendChild(b);
+});
+
+chipsTipo.addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  filtro.tipo = b.dataset.tipo;
+  chipsTipo.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b ? "true" : "false"));
+  aplicarFiltros();
+});
+
+document.getElementById("busca").addEventListener("input", e => { filtro.texto = e.target.value; aplicarFiltros(); });
+
+campoPreco.addEventListener("input", () => {
+  const v = parseFloat(campoPreco.value.replace(",", "."));
+  filtro.precoMax = isNaN(v) ? null : v;
+  aplicarFiltros();
+});
+
+chkPromo.addEventListener("change", () => { filtro.soPromo = chkPromo.checked; aplicarFiltros(); });
+
+btnFiltro.addEventListener("click", () => {
+  painel.hidden = !painel.hidden;
+  btnFiltro.setAttribute("aria-expanded", String(!painel.hidden));
+});
+
+document.getElementById("limpar").addEventListener("click", () => {
+  filtro.tipo = ""; filtro.precoMax = null; filtro.soPromo = false;
+  campoPreco.value = ""; chkPromo.checked = false;
+  chipsTipo.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.tipo === "" ? "true" : "false"));
+  aplicarFiltros();
+});
+
 atualizar();
+aplicarFiltros();

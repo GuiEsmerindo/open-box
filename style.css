@@ -23,13 +23,13 @@ body{
 }
 .pagina{max-width:640px;margin:0 auto;padding-bottom:130px}
 
-.topo{padding:40px 24px 28px;display:flex;flex-direction:column;gap:22px}
+.topo{padding:28px 24px 16px;display:flex;flex-direction:column;gap:14px}
 .logo{width:150px;height:auto;display:block}
 .topo h1{
   font-family:'Bricolage Grotesque',sans-serif;font-weight:700;
   font-size:46px;line-height:.95;letter-spacing:-.04em;color:#fff;
 }
-.topo p{font-size:15px;line-height:1.45;color:var(--suave);text-wrap:pretty;margin-top:-12px}
+.topo p{font-size:15px;line-height:1.4;color:var(--suave)}
 .topo strong{color:#fff;font-weight:600}
 
 main{padding:0 24px}
@@ -70,7 +70,7 @@ main{padding:0 24px}
 button:focus-visible,a:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
-.item-promo{align-self:flex-start;margin-top:2px;padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:600;line-height:1.3;color:var(--azul-claro);background:rgba(72,165,213,.12);border:1px solid rgba(72,165,213,.35)}
+.item-promo{align-self:flex-start;margin-top:2px;padding:5px 10px;border-radius:10px;font-size:12.5px;font-weight:600;line-height:1.3;color:var(--azul-claro);background:rgba(72,165,213,.12);border:1px solid rgba(72,165,213,.35)}
 .item-promo.ativa{color:#04140b;background:var(--verde);border-color:var(--verde)}
 
 .acoes{margin-top:28px;text-align:center}
@@ -78,3 +78,29 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--azul-claro);outline
 .acoes-botoes{display:flex;gap:10px;flex-wrap:wrap}
 .btn-sec{flex:1 1 220px;display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 16px;border-radius:14px;border:1.5px solid var(--azul);color:var(--azul-claro);font-weight:600;font-size:15px;text-decoration:none;text-align:center}
 .btn-sec:active{background:var(--painel)}
+
+.item[hidden],.vazio[hidden],.painel[hidden],.badge[hidden]{display:none}
+
+.busca{display:flex;gap:10px;margin-bottom:12px}
+.campo{flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border-radius:14px;background:var(--painel);border:1.5px solid transparent;color:var(--suave)}
+.campo:focus-within{border-color:var(--azul)}
+.campo svg,.btn-filtro svg{width:20px;height:20px;flex:none}
+.campo input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:#fff;font:inherit;font-size:16px}
+.campo input::placeholder{color:var(--apagado)}
+.btn-filtro{display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border-radius:14px;border:1.5px solid var(--azul);background:transparent;color:var(--azul-claro);font:inherit;font-weight:600;font-size:15px;cursor:pointer;flex:none}
+.btn-filtro[aria-expanded="true"]{background:var(--painel)}
+.badge{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--azul);color:var(--fundo);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+
+.painel{margin-bottom:12px;padding:16px;border-radius:16px;background:var(--painel);display:flex;flex-direction:column;gap:16px}
+.grupo{display:flex;flex-direction:column;gap:8px}
+.rotulo{font-size:13px;font-weight:600;color:var(--azul-claro)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:38px;padding:0 16px;border-radius:999px;border:1.5px solid var(--linha);background:transparent;color:var(--texto);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--azul);border-color:var(--azul);color:var(--fundo);font-weight:700}
+.preco-campo{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--suave)}
+.preco-campo input{width:110px;height:42px;padding:0 12px;border-radius:12px;border:1.5px solid var(--linha);background:var(--fundo);color:#fff;font:inherit;font-size:16px}
+.preco-campo input:focus{outline:0;border-color:var(--azul)}
+.chk{display:flex;align-items:center;gap:10px;font-size:15px;cursor:pointer}
+.chk input{width:22px;height:22px;accent-color:var(--azul)}
+.limpar{align-self:flex-start;background:none;border:0;padding:6px 0;color:var(--azul-claro);font:inherit;font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer}
+.vazio{text-align:center;color:var(--suave);font-size:15px;padding:28px 12px;border-top:1px solid var(--linha)}
