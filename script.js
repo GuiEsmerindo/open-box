@@ -14,7 +14,7 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
    promo: { qtd: 4, preco: 10.00 } → "leve 4 por R$ 10,00"  (sem promoção: null)
           A promoção vale a cada grupo completo: 8 unidades = 2 grupos de 4. */
 const PRODUTOS = [
-  { nome: "Água C/ Gás", descricao: "510ml", tipo: "Bebida", preco: 3.30, imagem: "https://samsclub.vtexassets.com/arquivos/ids/186185/aguamineralnaturalcomgaspratapack12garrafas370mlcada7897123882186.jpg", promo: null, ativo: true },
+  { nome: "Água C/ Gás", descricao: "510ml", tipo: "Bebida", preco: 3.30, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: true },
   { nome: "Red Bull Tradicional", descricao: "Normal/Zero 250ml", tipo: "Bebida", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
   { nome: "Monster Ultra", descricao: "437ml", tipo: "Bebida", preco: 12.00, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: false },
   { nome: "Coca-Cola Lata", descricao: "Normal/Zero - 350ml", tipo: "Bebida", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null, ativo: true },
