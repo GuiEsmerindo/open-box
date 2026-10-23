@@ -13,7 +13,11 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
    promo: { qtd: 4, preco: 10.00 } → "leve 4 por R$ 10,00"  (sem promoção: null)
    sabores: lista de sabores. Se o produto tiver, o botão "+ Sabores" abre a escolha.
             Para produto sem sabores, apague o campo ou deixe  sabores: []
-            Para tirar um sabor que acabou, apague o nome dele da lista. */
+            Para tirar um sabor de vez, apague o nome dele da lista.
+   ESGOTADO: coloque  esgotado: true  no produto para marcá-lo como esgotado.
+            Para um sabor esgotado, troque "Mango Loco" por { nome: "Mango Loco", esgotado: true }
+            Se todos os sabores estiverem esgotados, o produto inteiro aparece como esgotado.
+            Quando chegar de novo, volte para  esgotado: false  (ou apague o campo). */
 const PRODUTOS = [
   { nome: "Água C/ Gás", descricao: "510ml", tipo: "Bebida", preco: 3.79, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: true },
   { nome: "Red Bull", descricao: "250ml", sabores: ["Tradicional", "Tradicional Zero"], tipo: "Bebida", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
@@ -31,7 +35,12 @@ const brl = v => "R$ " + v.toFixed(2).replace(".", ",");
 const $ = id => document.getElementById(id);
 const lista = $("cardapio");
 const btnPedido = $("btn-pedido");
-const itens = PRODUTOS.filter(p => p.ativo !== false);
+const itens = PRODUTOS.filter(p => p.ativo !== false).map(p => {
+  const sabores = (p.sabores || []).map(s => typeof s === "string" ? { nome: s } : s);
+  const esgotado = p.esgotado === true || (sabores.length > 0 && sabores.every(s => s.esgotado === true));
+  return { ...p, sabores, esgotado };
+});
+const disponiveis = p => p.sabores.filter(s => !s.esgotado).length;
 const temSabores = p => Array.isArray(p.sabores) && p.sabores.length > 0;
 const qtds = itens.map(() => 0);                                   // total por produto
 const sab = itens.map(p => temSabores(p) ? p.sabores.map(() => 0) : null); // por sabor
@@ -61,12 +70,14 @@ function textoPromo(p, q) {
   return { texto: `Leve ${qtd} por ${brl(preco)}` + (economia > 0 ? ` (economize ${brl(economia)})` : ""), ativa: false };
 }
 
-const resumoSabores = i => itens[i].sabores.map((s, k) => sab[i][k] ? `${sab[i][k]}x ${s}` : null).filter(Boolean);
+const resumoSabores = i => itens[i].sabores.map((s, k) => sab[i][k] ? `${sab[i][k]}x ${s.nome}` : null).filter(Boolean);
 
 itens.forEach((p, i) => {
   const li = document.createElement("li");
-  li.className = "item";
-  const controle = temSabores(p)
+  li.className = "item" + (p.esgotado ? " esgotado" : "");
+  const controle = p.esgotado
+    ? `<span class="tag-esgotado">Esgotado</span>`
+    : temSabores(p)
     ? `<button type="button" class="btn-sabores" id="s${i}" data-abrir="${i}" aria-label="Escolher sabores de ${p.nome}">+ Sabores</button>`
     : `<div class="qtd">
          <button type="button" class="menos" id="m${i}" aria-label="Remover ${p.nome}" data-i="${i}" data-d="-1">−</button>
@@ -79,8 +90,8 @@ itens.forEach((p, i) => {
       <div class="item-nome">${p.nome}</div>
       ${p.descricao ? `<div class="item-desc">${p.descricao}</div>` : ""}
       <div class="item-preco">${brl(p.preco)}</div>
-      ${temSabores(p) ? `<button type="button" class="item-sabores" id="l${i}" data-abrir="${i}">Ver sabores (${p.sabores.length})</button>` : ""}
-      ${p.promo ? `<div class="item-promo" id="p${i}">${textoPromo(p, 0).texto}</div>` : ""}
+      ${temSabores(p) && !p.esgotado ? `<button type="button" class="item-sabores" id="l${i}" data-abrir="${i}">Ver sabores (${disponiveis(p)})</button>` : ""}
+      ${p.promo && !p.esgotado ? `<div class="item-promo" id="p${i}">${textoPromo(p, 0).texto}</div>` : ""}
     </div>
     ${controle}`;
   lista.appendChild(li);
@@ -94,7 +105,7 @@ function refresh(i) {
     const b = $("s" + i), l = $("l" + i), r = resumoSabores(i);
     b.innerHTML = q ? `<span class="bolha">${q}</span> Editar` : "+ Sabores";
     b.classList.toggle("tem", q > 0);
-    l.textContent = r.length ? r.join(" · ") : `Ver sabores (${p.sabores.length})`;
+    l.textContent = r.length ? r.join(" · ") : `Ver sabores (${disponiveis(p)})`;
     l.classList.toggle("escolhido", r.length > 0);
   } else {
     $("q" + i).textContent = q;
@@ -130,12 +141,13 @@ function abrirFolha(i, origem) {
   const p = itens[i];
   $("folha-titulo").textContent = p.nome;
   $("folha-sub").textContent = [p.descricao, brl(p.preco)].filter(Boolean).join(" · ");
-  folhaLista.innerHTML = p.sabores.map((s, k) => `
-    <li><span>${s}</span>
+  folhaLista.innerHTML = p.sabores.map((s, k) => s.esgotado ? `
+    <li class="sabor-esgotado"><span>${s.nome}</span><span class="tag-esgotado">Esgotado</span></li>` : `
+    <li><span>${s.nome}</span>
       <div class="qtd">
-        <button type="button" class="menos${sab[i][k] ? " ativo" : ""}" id="fm${k}" aria-label="Remover ${s}" data-f="${k}" data-d="-1">−</button>
+        <button type="button" class="menos${sab[i][k] ? " ativo" : ""}" id="fm${k}" aria-label="Remover ${s.nome}" data-f="${k}" data-d="-1">−</button>
         <output id="fq${k}">${sab[i][k]}</output>
-        <button type="button" class="mais" aria-label="Adicionar ${s}" data-f="${k}" data-d="1">+</button>
+        <button type="button" class="mais" aria-label="Adicionar ${s.nome}" data-f="${k}" data-d="1">+</button>
       </div>
     </li>`).join("");
   atualizarPromoFolha();
@@ -205,7 +217,7 @@ function passa(p, f) {
   if (f.tipo && p.tipo !== f.tipo) return false;
   if (f.precoMax !== null && p.preco > f.precoMax) return false;
   if (f.soPromo && !p.promo) return false;
-  const alvo = norm([p.nome, p.descricao, p.tipo, ...(p.sabores || [])].join(" "));
+  const alvo = norm([p.nome, p.descricao, p.tipo, ...p.sabores.map(s => s.nome)].join(" "));
   return norm(f.texto).split(/\s+/).filter(Boolean).every(w => alvo.includes(w));
 }
 

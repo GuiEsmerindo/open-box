@@ -127,3 +127,10 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--azul-claro);outline
 .btn-prim{height:52px;border:0;border-radius:14px;background:var(--azul);color:var(--fundo);font:inherit;font-weight:700;font-size:16px;cursor:pointer}
 .btn-prim:active{background:var(--azul-escuro)}
 @media (min-width:700px){.folha{align-items:center}.folha-caixa{border-radius:22px;border:1px solid var(--linha)}}
+
+/* ===== ESGOTADO ===== */
+.tag-esgotado{flex:none;padding:7px 12px;border-radius:10px;background:rgba(255,120,120,.12);border:1px solid rgba(255,120,120,.4);color:#ff9a9a;font-size:13px;font-weight:700;white-space:nowrap}
+.item.esgotado .item-foto{filter:grayscale(1);opacity:.4}
+.item.esgotado .item-nome,.item.esgotado .item-preco{color:var(--apagado)}
+.item.esgotado .item-desc{color:var(--apagado)}
+.folha-lista li.sabor-esgotado{color:var(--apagado);font-weight:500}
