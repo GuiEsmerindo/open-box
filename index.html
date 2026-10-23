@@ -64,6 +64,22 @@
     <a id="btn-pedido" class="btn-zap" href="#" target="_blank" rel="noopener" aria-disabled="true">Enviar no WhatsApp</a>
   </div>
 
+  <div id="folha" class="folha" hidden>
+    <div class="folha-fundo" data-fechar></div>
+    <div class="folha-caixa" role="dialog" aria-modal="true" aria-labelledby="folha-titulo">
+      <div class="folha-topo">
+        <div>
+          <h2 id="folha-titulo"></h2>
+          <p id="folha-sub"></p>
+        </div>
+        <button type="button" class="folha-x" data-fechar aria-label="Fechar">×</button>
+      </div>
+      <ul id="folha-lista" class="folha-lista"></ul>
+      <p id="folha-promo" class="item-promo" hidden></p>
+      <button type="button" id="folha-ok" class="btn-prim" data-fechar>Concluir</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

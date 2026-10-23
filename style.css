@@ -104,3 +104,26 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--azul-claro);outline
 .chk input{width:22px;height:22px;accent-color:var(--azul)}
 .limpar{align-self:flex-start;background:none;border:0;padding:6px 0;color:var(--azul-claro);font:inherit;font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer}
 .vazio{text-align:center;color:var(--suave);font-size:15px;padding:28px 12px;border-top:1px solid var(--linha)}
+
+/* ===== SABORES ===== */
+.item-sabores{align-self:flex-start;margin-top:2px;padding:6px 0;background:none;border:0;font:inherit;font-size:13.5px;font-weight:600;color:var(--azul-claro);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(121,181,212,.5)}
+.item-sabores.escolhido{color:#fff;text-decoration:none}
+.btn-sabores{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 16px;border-radius:14px;border:0;background:var(--azul);color:var(--fundo);font:inherit;font-weight:700;font-size:15px;cursor:pointer;flex:none;white-space:nowrap}
+.btn-sabores:active{background:var(--azul-escuro)}
+.btn-sabores.tem{background:var(--painel);color:var(--texto);border:1.5px solid var(--azul)}
+.bolha{min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--azul);color:var(--fundo);font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+
+.folha[hidden]{display:none}
+.folha{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center}
+.folha-fundo{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.folha-caixa{position:relative;width:100%;max-width:640px;max-height:88vh;overflow:auto;background:var(--fundo);border-top:1px solid var(--linha);border-radius:22px 22px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;animation:sobe .2s ease-out}
+@keyframes sobe{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.folha-topo{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.folha-topo h2{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;letter-spacing:-.02em;color:#fff}
+.folha-topo p{font-size:14px;color:var(--azul-claro);margin-top:2px}
+.folha-x{width:44px;height:44px;flex:none;border-radius:12px;border:0;background:var(--painel);color:var(--texto);font-size:26px;line-height:1;cursor:pointer}
+.folha-lista{list-style:none;border-top:1px solid var(--linha)}
+.folha-lista li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--linha);font-size:16px;font-weight:600;color:#fff}
+.btn-prim{height:52px;border:0;border-radius:14px;background:var(--azul);color:var(--fundo);font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.btn-prim:active{background:var(--azul-escuro)}
+@media (min-width:700px){.folha{align-items:center}.folha-caixa{border-radius:22px;border:1px solid var(--linha)}}
