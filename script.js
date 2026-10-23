@@ -19,7 +19,7 @@ const PRODUTOS = [
   { nome: "Monster", descricao: "Tradicional Zero/Mango Loco/Pipeline Punch 437ml", tipo: "Bebida", preco: 12.00, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: true },
   { nome: "Coca-Cola Lata", descricao: "Normal/Zero - 350ml", tipo: "Bebida", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null, ativo: true },
   { nome: "Coca-Cola 2lts", descricao: "", tipo: "Bebida", preco: 14.50, imagem: "https://phygital-files.mercafacil.com/princesa/uploads/produto/refrigerante_original_coca_cola_pet_2500ml_59fe5b72-9150-414f-adfc-8a3c2c440f14.png", promo: null, ativo: true },
-  { nome: "Amendoim Mendorato", descricao: "45g", tipo: "Salgadinho", preco: 2.20, imagem: "", promo: null, ativo: true },
+  { nome: "Amendoim Mendorato", descricao: "45g", tipo: "Salgadinho", preco: 2.50, imagem: "", promo: null, ativo: true },
   { nome: "KitKat", descricao: "", tipo: "Chocolate", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
   { nome: "Trento Massimo Choc/ 25g", descricao: "", tipo: "Chocolate", preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null, ativo: true },
   { nome: "Ouro Branco", descricao: "", tipo: "Chocolate", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
