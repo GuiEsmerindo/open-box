@@ -28,7 +28,6 @@ const PRODUTOS = [
   { nome: "KitKat", descricao: "", tipo: "Chocolate", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
   { nome: "Trento", sabores: [{nome: "Massimo Chocolate 25g"}], descricao: "", tipo: "Chocolate", preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null, ativo: true },
   { nome: "Ouro Branco", descricao: "", tipo: "Chocolate", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
-  { nome: "Item Teste", esgotado: true, descricao: "Teste", tipo: "Chocolate", preco: 5.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 5, preco: 10.00 }, ativo: true },
 ];
 
 /* ===== CÓDIGO (não precisa mexer daqui para baixo) ===== */
