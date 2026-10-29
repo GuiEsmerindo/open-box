@@ -79,7 +79,7 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--azul-claro);outline
 .btn-sec{flex:1 1 220px;display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 16px;border-radius:14px;border:1.5px solid var(--azul);color:var(--azul-claro);font-weight:600;font-size:15px;text-decoration:none;text-align:center}
 .btn-sec:active{background:var(--painel)}
 
-.item[hidden],.vazio[hidden],.painel[hidden],.badge[hidden]{display:none}
+.item[hidden],.secao[hidden],.vazio[hidden],.painel[hidden],.badge[hidden]{display:none}
 
 .busca{display:flex;gap:10px;margin-bottom:12px}
 .campo{flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border-radius:14px;background:var(--painel);border:1.5px solid transparent;color:var(--suave)}
@@ -134,3 +134,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--azul-claro);outline
 .item.esgotado .item-nome,.item.esgotado .item-preco{color:var(--apagado)}
 .item.esgotado .item-desc{color:var(--apagado)}
 .folha-lista li.sabor-esgotado{color:var(--apagado);font-weight:500}
+
+/* ===== SUBTÍTULOS DE SEÇÃO ===== */
+.secao{padding:26px 0 10px}
+.secao:first-child{padding-top:6px}
+.secao h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--azul)}
