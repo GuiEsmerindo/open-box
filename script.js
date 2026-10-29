@@ -21,19 +21,19 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
             Se todos os sabores estiverem esgotados, o produto inteiro aparece como esgotado.
             Quando chegar de novo, volte para  esgotado: false  (ou apague o campo). */
 const PRODUTOS = [
-  { nome: "Água C/ Gás", descricao: "510ml", tipo: "Bebida", preco: 3.80, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: true },
-  { nome: "Red Bull", descricao: "250ml", sabores: ["Tradicional", "Tradicional Zero"], tipo: "Bebida", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
-  { nome: "Monster", descricao: "437ml", sabores: ["Tradicional Zero","Mango Loco", "Pipeline Punch"], tipo: "Bebida", preco: 12.00, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: true },
-  { nome: "Coca-Cola Mini", descricao: "200ml", sabores: ["Normal", "Zero"], tipo: "Bebida", preco: 3.50, imagem: "https://coopsp.vtexassets.com/arquivos/ids/249034/56298.png", promo: null, ativo: true },
-  { nome: "Coca-Cola Lata", descricao: "350ml", sabores: ["Normal", "Zero"], tipo: "Bebida", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null, ativo: true },
-  { nome: "Coca-Cola 2lts", descricao: "", tipo: "Bebida", preco: 15.00, imagem: "https://phygital-files.mercafacil.com/princesa/uploads/produto/refrigerante_original_coca_cola_pet_2500ml_59fe5b72-9150-414f-adfc-8a3c2c440f14.png", promo: null, ativo: true },
-  { nome: "Amendoim Mendorato", descricao: "44g", tipo: "Salgadinho", preco: 2.50, imagem: "https://phygital-files.mercafacil.com/catalogo/uploads/produto/amendoim_japones_mendorato_45g_91920d3c-1fb4-43fa-87e3-a457e8504c0c.png", promo: null, ativo: true },
-  { nome: "Doritos", descricao: "120g", tipo: "Salgadinho", preco: 14.90, imagem: "https://images.tcdn.com.br/img/img_prod/1176430/salgadinho_doritos_queijo_nacho_120g_18849_1_37da41f31446d05e392f9f74a3fd4f1d.png", promo: null, ativo: true },
-  { nome: "Batata Lays", descricao: "62g", sabores: [{nome: "Clássica", esgotado: true }, "Sour Cream"], tipo: "Salgadinho", preco: 13.80, imagem: "https://hiperideal.vtexassets.com/arquivos/ids/235268/2204200.png", promo: null, ativo: true },
-  { nome: "Torcida", descricao: "60g", sabores: ["Churrasco", {nome: "Queijo", esgotado: true}], tipo: "Salgadinho", preco: 4.30, imagem: "https://gddistribuidor.agilecdn.com.br/5904.png", promo: null, ativo: true },
-  { nome: "KitKat", descricao: "", tipo: "Chocolate", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
-  { nome: "Trento", sabores: [{nome: "Massimo Chocolate 25g"}], descricao: "", tipo: "Chocolate", preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null, ativo: true },
-  { nome: "Ouro Branco", descricao: "", tipo: "Chocolate", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
+  { nome: "Água C/ Gás", descricao: "510ml", tipo: "Bebidas", preco: 3.80, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: true },
+  { nome: "Red Bull", descricao: "250ml", sabores: ["Tradicional", "Tradicional Zero"], tipo: "Bebidas", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
+  { nome: "Monster", descricao: "437ml", sabores: ["Tradicional Zero","Mango Loco", "Pipeline Punch"], tipo: "Bebidas", preco: 12.00, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: true },
+  { nome: "Coca-Cola Mini", descricao: "200ml", sabores: ["Normal", "Zero"], tipo: "Bebidas", preco: 3.50, imagem: "https://coopsp.vtexassets.com/arquivos/ids/249034/56298.png", promo: null, ativo: true },
+  { nome: "Coca-Cola Lata", descricao: "350ml", sabores: ["Normal", "Zero"], tipo: "Bebidas", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null, ativo: true },
+  { nome: "Coca-Cola 2lts", descricao: "", tipo: "Bebidas", preco: 15.00, imagem: "https://phygital-files.mercafacil.com/princesa/uploads/produto/refrigerante_original_coca_cola_pet_2500ml_59fe5b72-9150-414f-adfc-8a3c2c440f14.png", promo: null, ativo: true },
+  { nome: "Amendoim Mendorato", descricao: "44g", tipo: "Salgadinhos", preco: 2.50, imagem: "https://phygital-files.mercafacil.com/catalogo/uploads/produto/amendoim_japones_mendorato_45g_91920d3c-1fb4-43fa-87e3-a457e8504c0c.png", promo: null, ativo: true },
+  { nome: "Doritos", descricao: "120g", tipo: "Salgadinhos", preco: 14.90, imagem: "https://images.tcdn.com.br/img/img_prod/1176430/salgadinho_doritos_queijo_nacho_120g_18849_1_37da41f31446d05e392f9f74a3fd4f1d.png", promo: null, ativo: true },
+  { nome: "Batata Lays", descricao: "62g", sabores: [{nome: "Clássica", esgotado: true }, "Sour Cream"], tipo: "Salgadinhos", preco: 13.80, imagem: "https://hiperideal.vtexassets.com/arquivos/ids/235268/2204200.png", promo: null, ativo: true },
+  { nome: "Torcida", descricao: "60g", sabores: ["Churrasco", {nome: "Queijo", esgotado: true}], tipo: "Salgadinhos", preco: 4.30, imagem: "https://gddistribuidor.agilecdn.com.br/5904.png", promo: null, ativo: true },
+  { nome: "KitKat", descricao: "", tipo: "Chocolates", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
+  { nome: "Trento", sabores: [{nome: "Massimo Chocolate 25g"}], descricao: "", tipo: "Chocolates", preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null, ativo: true },
+  { nome: "Ouro Branco", descricao: "", tipo: "Chocolates", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
 ];
 
 /* ===== CÓDIGO (não precisa mexer daqui para baixo) ===== */
