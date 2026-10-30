@@ -32,7 +32,7 @@ const PRODUTOS = [
   { nome: "Batata Lays", descricao: "62g", sabores: [{nome: "Clássica", esgotado: true }, "Sour Cream"], tipo: "Salgadinhos", preco: 13.80, imagem: "https://hiperideal.vtexassets.com/arquivos/ids/235268/2204200.png", promo: null, ativo: true },
   { nome: "Torcida", descricao: "60g", sabores: ["Churrasco", {nome: "Queijo", esgotado: true}], tipo: "Salgadinhos", preco: 4.30, imagem: "https://gddistribuidor.agilecdn.com.br/5904.png", promo: null, ativo: true },
   { nome: "KitKat", descricao: "", tipo: "Chocolates", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
-  { nome: "Trento", sabores: [{nome: "Massimo Chocolate 25g"}], descricao: "", tipo: "Chocolates", preco: 4.00, imagem: "https://d16w7cuzwgzfcy.cloudfront.net/Custom/Content/Products/19/12/191296_chocolate-trento-massimo-chocolate-30gr-p565181_m2_638963831166557784.webp", promo: null, ativo: true },
+  { nome: "Trento", sabores: ["Massimo Chocolate 25g", "Chocolate 29g", "Duo 29g"], descricao: "", tipo: "Chocolates", preco: 4.00, imagem: "https://edge.osuper.com.br/VYRuAOzA21XQ4rk6LfRnqHgKGWA=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/1fad92a2-ChocolateTrentoSaborChocolate29G_65443.jpeg", promo: null, ativo: true },
   { nome: "Ouro Branco", descricao: "", tipo: "Chocolates", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
 ];
 
