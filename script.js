@@ -21,7 +21,7 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
             Se todos os sabores estiverem esgotados, o produto inteiro aparece como esgotado.
             Quando chegar de novo, volte para  esgotado: false  (ou apague o campo). */
 const PRODUTOS = [
-  { nome: "Água C/ Gás", descricao: "510ml", tipo: "Bebidas", preco: 3.80, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: true },
+  { nome: "Água C/ Gás", descricao: "510ml", esgotado: true, tipo: "Bebidas", preco: 3.80, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: true },
   { nome: "Red Bull", descricao: "250ml", sabores: ["Tradicional", "Tradicional Zero"], tipo: "Bebidas", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
   { nome: "Monster", descricao: "437ml", sabores: ["Tradicional Zero","Mango Loco", "Pipeline Punch"], tipo: "Bebidas", preco: 12.00, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: true },
   { nome: "Coca-Cola Mini", descricao: "200ml", sabores: ["Normal", "Zero"], tipo: "Bebidas", preco: 3.50, imagem: "https://coopsp.vtexassets.com/arquivos/ids/249034/56298.png", promo: null, ativo: true },
