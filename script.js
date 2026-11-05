@@ -6,20 +6,21 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
 
 /* ===== CARDÁPIO =====
    Para ADICIONAR um item: copie uma linha { ... } e altere os dados.
-   Para REMOVER: apague a linha inteira.
-   Para deixar de vender temporariamente: coloque  ativo: false
-   tipo: classificação do produto (ex.: "Bebidas", "Chocolates"). Vira o subtítulo da seção no
-         cardápio, o botão do filtro e também vale na busca. Produtos do mesmo tipo ficam juntos,
-         e as seções aparecem na ordem em que o tipo surge pela primeira vez na lista.
+   Para REMOVER: apague a linha inteira.  Para esconder por um tempo: ativo: false
+   tipo: vira o subtítulo da seção, o botão do filtro e vale na busca.
    imagem: link da imagem ou nome do arquivo (deixe "" para não mostrar foto).
-   promo: { qtd: 4, preco: 10.00 } → "leve 4 por R$ 10,00"  (sem promoção: null)
-   sabores: lista de sabores. Se o produto tiver, o botão "+ Sabores" abre a escolha.
-            Para produto sem sabores, apague o campo ou deixe  sabores: []
-            Para tirar um sabor de vez, apague o nome dele da lista.
-   ESGOTADO: coloque  esgotado: true  no produto para marcá-lo como esgotado.
-            Para um sabor esgotado, troque "Mango Loco" por { nome: "Mango Loco", esgotado: true }
-            Se todos os sabores estiverem esgotados, o produto inteiro aparece como esgotado.
-            Quando chegar de novo, volte para  esgotado: false  (ou apague o campo). */
+   sabores: lista de sabores (veja "Ver sabores"). Sabor esgotado: { nome: "Mango Loco", esgotado: true }
+   esgotado: true → marca o produto inteiro como esgotado.
+
+   PROMOÇÃO "LEVE X POR Y":   promo: { qtd: 4, preco: 10.00 }     (sem promoção: null)
+   OFERTA "DE / POR":         oferta: { preco: 5.90 }
+        O "preco" do produto continua sendo o preço normal. Quando a oferta está valendo, a página
+        mostra "De R$ normal / Por R$ oferta" e cobra o preço da oferta.
+   Tanto promo quanto oferta aceitam, se quiser que valham só em certos momentos:
+        dias: [3, 5]            → só nesses dias (0=dom 1=seg 2=ter 3=qua 4=qui 5=sex 6=sáb)
+        de: "2026-11-10"        → a partir dessa data
+        ate: "2026-11-30"       → até essa data (inclusive)
+   Exemplo: oferta: { preco: 5.90, dias: [3] }  → "De R$ 7,00 por R$ 5,90" só às quartas. */
 const PRODUTOS = [
   { nome: "Água C/ Gás", descricao: "510ml", esgotado: true, tipo: "Bebidas", preco: 3.80, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: false },
   { nome: "Red Bull", descricao: "250ml", sabores: ["Tradicional", "Tradicional Zero"], tipo: "Bebidas", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
@@ -37,15 +38,58 @@ const PRODUTOS = [
   { nome: "Ouro Branco", descricao: "", tipo: "Chocolates", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
 ];
 
+/* ===== AVISOS (POP-UP) =====
+   Aparecem quando o cliente abre a página. Cada aviso aparece 1 vez por dia para cada cliente
+   (para aparecer sempre, coloque  sempre: true).  Vários avisos válidos aparecem um depois do outro.
+   id:        nome único do aviso. Se você mudar o id, ele volta a aparecer para quem já viu.
+   ativo:     true liga, false desliga.
+   dias / de / ate: quando vale (igual às ofertas). Apague para valer sempre.
+   titulo, texto: o texto aceita quebra de linha com \n.
+   imagem:    opcional. Link ou nome do arquivo enviado ao GitHub (ex.: "promo-quarta.jpg").
+   botao:     texto do botão (padrão: "Ver cardápio").
+   soPromocoes: true → o botão já mostra só os produtos em promoção.
+   buscar:    "Monster" → o botão já pesquisa por esse nome (bom para anunciar produto novo).
+   TESTE: abra o site com  ?dia=3  no final do link para simular uma quarta-feira (0 a 6),
+          e com  &aviso  para ignorar o "já vi hoje". Ex.: seusite.github.io/open-box/?dia=3&aviso */
+const AVISOS = [
+  {
+    id: "exemplo-quarta",
+    ativo: false,
+    dias: [3],
+    titulo: "Quarta do Chocolate",
+    texto: "Hoje o KitKat e o Ouro Branco estão em promoção.\nAproveite!",
+    imagem: "",
+    botao: "Ver promoções",
+    soPromocoes: true,
+  },
+];
+
 /* ===== CÓDIGO (não precisa mexer daqui para baixo) ===== */
 const brl = v => "R$ " + v.toFixed(2).replace(".", ",");
 const $ = id => document.getElementById(id);
 const lista = $("cardapio");
 const btnPedido = $("btn-pedido");
+
+// Data e dia da semana de hoje (?dia=3 na URL simula um dia, só para testes)
+const params = new URLSearchParams(location.search);
+const agora = new Date();
+const dataHoje = `${agora.getFullYear()}-${String(agora.getMonth() + 1).padStart(2, "0")}-${String(agora.getDate()).padStart(2, "0")}`;
+const diaHoje = params.has("dia") && params.get("dia") !== "" ? +params.get("dia") : agora.getDay();
+// Vale hoje? (dias, de e ate são opcionais)
+const vigente = o => {
+  if (!o) return false;
+  if (Array.isArray(o.dias) && o.dias.length && !o.dias.includes(diaHoje)) return false;
+  if (o.de && dataHoje < o.de) return false;
+  if (o.ate && dataHoje > o.ate) return false;
+  return true;
+};
+
 const itens = PRODUTOS.filter(p => p.ativo !== false).map(p => {
   const sabores = (p.sabores || []).map(s => typeof s === "string" ? { nome: s } : s);
   const esgotado = p.esgotado === true || (sabores.length > 0 && sabores.every(s => s.esgotado === true));
-  return { ...p, sabores, esgotado };
+  const promo = vigente(p.promo) ? p.promo : null;
+  const ofertaOn = vigente(p.oferta) && p.oferta.preco < p.preco;
+  return { ...p, sabores, esgotado, promo, preco: ofertaOn ? p.oferta.preco : p.preco, precoDe: ofertaOn ? p.preco : null };
 });
 const disponiveis = p => p.sabores.filter(s => !s.esgotado).length;
 
@@ -83,6 +127,10 @@ function textoPromo(p, q) {
   return { texto: `Leve ${qtd} por ${brl(preco)}` + (economia > 0 ? ` (economize ${brl(economia)})` : ""), ativa: false };
 }
 
+const precoHtml = p => p.precoDe
+  ? `<div class="item-de">De ${brl(p.precoDe)}</div><div class="item-preco">Por ${brl(p.preco)}</div>`
+  : `<div class="item-preco">${brl(p.preco)}</div>`;
+
 const resumoSabores = i => itens[i].sabores.map((s, k) => sab[i][k] ? `${sab[i][k]}x ${s.nome}` : null).filter(Boolean);
 
 itens.forEach((p, i) => {
@@ -110,7 +158,7 @@ itens.forEach((p, i) => {
     <div class="item-texto">
       <div class="item-nome">${p.nome}</div>
       ${p.descricao ? `<div class="item-desc">${p.descricao}</div>` : ""}
-      <div class="item-preco">${brl(p.preco)}</div>
+      ${precoHtml(p)}
       ${temSabores(p) && !p.esgotado ? `<button type="button" class="item-sabores" id="l${i}" data-abrir="${i}">Ver sabores (${disponiveis(p)})</button>` : ""}
       ${p.promo && !p.esgotado ? `<div class="item-promo" id="p${i}">${textoPromo(p, 0).texto}</div>` : ""}
     </div>
@@ -161,7 +209,7 @@ function abrirFolha(i, origem) {
   atual = i; foco = origem;
   const p = itens[i];
   $("folha-titulo").textContent = p.nome;
-  $("folha-sub").textContent = [p.descricao, brl(p.preco)].filter(Boolean).join(" · ");
+  $("folha-sub").textContent = [p.descricao, p.precoDe ? `de ${brl(p.precoDe)} por ${brl(p.preco)}` : brl(p.preco)].filter(Boolean).join(" · ");
   folhaLista.innerHTML = p.sabores.map((s, k) => s.esgotado ? `
     <li class="sabor-esgotado"><span>${s.nome}</span><span class="tag-esgotado">Esgotado</span></li>` : `
     <li><span>${s.nome}</span>
@@ -211,7 +259,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !folha.hid
 function atualizar() {
   const escolhidos = itens.map((p, i) => ({ p, i, q: qtds[i] })).filter(x => x.q > 0);
   const total = escolhidos.reduce((s, x) => s + totalItem(x.p, x.q), 0);
-  const cheio = escolhidos.reduce((s, x) => s + x.p.preco * x.q, 0);
+  const cheio = escolhidos.reduce((s, x) => s + (x.p.precoDe || x.p.preco) * x.q, 0);
   const n = escolhidos.reduce((s, x) => s + x.q, 0);
   $("barra-qtd").textContent = n === 1 ? "1 item" : n + " itens";
   $("barra-total").textContent = brl(total);
@@ -237,7 +285,7 @@ const filtro = { texto: "", tipo: "", precoMax: null, soPromo: false };
 function passa(p, f) {
   if (f.tipo && p.tipo !== f.tipo) return false;
   if (f.precoMax !== null && p.preco > f.precoMax) return false;
-  if (f.soPromo && !p.promo) return false;
+  if (f.soPromo && !(p.promo || p.precoDe)) return false;
   const alvo = norm([p.nome, p.descricao, p.tipo, ...p.sabores.map(s => s.nome)].join(" "));
   return norm(f.texto).split(/\s+/).filter(Boolean).every(w => alvo.includes(w));
 }
@@ -302,3 +350,51 @@ $("limpar").addEventListener("click", () => {
 
 atualizar();
 aplicarFiltros();
+
+/* ===== AVISOS (POP-UP) ===== */
+const aviso = $("aviso");
+const forcar = params.has("aviso");
+const chaveAviso = a => "ob-aviso-" + (a.id || a.titulo);
+const jaViu = a => { try { return localStorage.getItem(chaveAviso(a)) === dataHoje; } catch { return false; } };
+const marcarVisto = a => { try { localStorage.setItem(chaveAviso(a), dataHoje); } catch {} };
+const fila = AVISOS.filter(a => a.ativo !== false && vigente(a) && (forcar || a.sempre || !jaViu(a)));
+let avisoAtual = null;
+
+function proximoAviso() {
+  avisoAtual = fila.shift() || null;
+  if (!avisoAtual) {
+    aviso.hidden = true;
+    if (folha.hidden) document.body.style.overflow = "";
+    return;
+  }
+  const a = avisoAtual, img = $("aviso-img");
+  $("aviso-titulo").textContent = a.titulo || "";
+  $("aviso-texto").textContent = a.texto || "";
+  $("aviso-texto").hidden = !a.texto;
+  img.hidden = !a.imagem;
+  img.onerror = () => { img.hidden = true; };
+  if (a.imagem) { img.alt = a.titulo || ""; img.src = a.imagem; }
+  $("aviso-ok").textContent = a.botao || "Ver cardápio";
+  aviso.hidden = false;
+  document.body.style.overflow = "hidden";
+  marcarVisto(a);
+  $("aviso-ok").focus();
+}
+
+function fecharAviso() { proximoAviso(); }
+
+aviso.addEventListener("click", e => { if (e.target.closest("[data-fechar-aviso]")) fecharAviso(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !aviso.hidden) fecharAviso(); });
+
+$("aviso-ok").addEventListener("click", () => {
+  const a = avisoAtual;
+  if (!a.soPromocoes && !a.buscar) { fecharAviso(); return; }
+  fila.length = 0;            // o cliente quer ver os produtos: não mostra os próximos avisos
+  proximoAviso();
+  if (a.soPromocoes) { chkPromo.checked = true; filtro.soPromo = true; }
+  if (a.buscar) { $("busca").value = a.buscar; filtro.texto = a.buscar; }
+  aplicarFiltros();
+  $("busca").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+proximoAviso();

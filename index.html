@@ -80,6 +80,19 @@
     </div>
   </div>
 
+  <div id="aviso" class="aviso" hidden>
+    <div class="aviso-fundo" data-fechar-aviso></div>
+    <div class="aviso-caixa" role="dialog" aria-modal="true" aria-labelledby="aviso-titulo">
+      <button type="button" class="aviso-x" data-fechar-aviso aria-label="Fechar aviso">×</button>
+      <img id="aviso-img" class="aviso-img" alt="" hidden>
+      <div class="aviso-corpo">
+        <h2 id="aviso-titulo"></h2>
+        <p id="aviso-texto"></p>
+        <button type="button" id="aviso-ok" class="btn-prim"></button>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
