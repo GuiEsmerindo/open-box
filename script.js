@@ -24,7 +24,7 @@ const LINK_SUGESTAO = "https://forms.gle/1CDVpfFGvDW3VBPo7";
 const PRODUTOS = [
   { nome: "Água C/ Gás", descricao: "510ml", esgotado: true, tipo: "Bebidas", preco: 3.80, imagem: "https://apoioentrega.vteximg.com.br/arquivos/ids/1911515/139272_0.png", promo: null, ativo: false },
   { nome: "Red Bull", descricao: "250ml", sabores: ["Tradicional", "Tradicional Zero"], tipo: "Bebidas", preco: 12.00, imagem: "https://nossadistribuidorabebidas.com.br/wp-content/uploads/2021/12/red-bull-250ml.png", promo: null, ativo: true },
-  { nome: "Monster", descricao: "437ml", sabores: ["Tradicional Zero","Mango Loco", "Pipeline Punch"], tipo: "Bebidas", preco: 12.00, oferta: { preco: 9.90, dias: [4] }, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: true },
+  { nome: "Monster", descricao: "437ml", sabores: ["Tradicional Zero","Mango Loco", "Pipeline Punch"], tipo: "Bebidas", preco: 12.00, imagem: "https://edge.osuper.com.br/JHFyjJ5KBpc6R5LjJHbUEJzGLp4=/1600x0/smart/https://osuper-ecommerce-koch.s3.sa-east-1.amazonaws.com/e50785a3-EnergticoMonsterUltraSemAcar473Ml_75539.png", promo: null, ativo: true },
   { nome: "Coca-Cola Mini", descricao: "200ml", sabores: ["Normal", "Zero"], tipo: "Bebidas", preco: 3.50, imagem: "https://coopsp.vtexassets.com/arquivos/ids/249034/56298.png", promo: null, ativo: true },
   { nome: "Coca-Cola Lata", descricao: "350ml", sabores: ["Normal", "Zero"], tipo: "Bebidas", preco: 7.00, imagem: "https://pipocao.agilecdn.com.br/13208.jpg", promo: null, ativo: true },
   { nome: "Esportivo 2 Lts", descricao: "", sabores: ["Guaraná"], tipo: "Bebidas", preco: 7.80, imagem: "https://refrigerantesesportivo.com.br/wp-content/uploads/2026/06/2-esportivo-carrossel-Guarana-2L.webp", promo: null, ativo: true },
@@ -54,7 +54,7 @@ const PRODUTOS = [
 const AVISOS = [
   {
     id: "exemplo-quarta",
-    ativo: true,
+    ativo: false,
     dias: [4],
     titulo: "Quarta do Chocolate",
     texto: "Hoje o KitKat e o Ouro Branco estão em promoção.\nAproveite!",
