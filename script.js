@@ -64,11 +64,36 @@ const AVISOS = [
   },
 ];
 
+/* ===== EMPRESAS (DESCONTO POR EMPRESA) =====
+   EMPRESAS_ATIVO: true  → mostra a pergunta "Você trabalha em alguma destas empresas?" ao abrir o cardápio.
+                   false → desliga tudo (sem pergunta, sem desconto). Use quando não houver promoção.
+   Cada empresa da lista:
+     nome:       aparece para o cliente (não repita nomes).
+     dias / de / ate:  quando o desconto vale (igual às ofertas). Ex.: dias: [2] = só às terças.
+                 A empresa só aparece na pergunta nos dias em que vale. Se nenhuma valer hoje,
+                 a pergunta nem aparece. Apague para valer todos os dias.
+     desconto:   10  → 10% em todo o cardápio.
+     itens:      desconto só em alguns produtos (o nome precisa ser igual ao do cardápio):
+                   { nome: "KitKat",  preco: 4.50 }      → preço fixo neste item
+                   { nome: "Monster", desconto: 20 }     → 20% neste item
+                 Se a empresa tiver "desconto" e "itens", o item usa a regra dele e os demais o desconto geral.
+     descricao:  opcional. Texto da pergunta (se vazio, a página escreve sozinha).
+     ativo:      false desliga só essa empresa, sem apagar.
+   O desconto da empresa nunca soma com oferta ou promoção: vale sempre o MENOR preço.
+   O cliente escolhe uma vez e a página lembra; ele pode trocar no aviso acima da busca.
+   TESTE: ?dia=2&empresa  (simula terça e pergunta de novo, mesmo que já tenha respondido). */
+const EMPRESAS_ATIVO = false;
+const EMPRESAS = [
+  { nome: "Empresa Exemplo A", dias: [2], desconto: 10 },
+  { nome: "Empresa Exemplo B", dias: [3], itens: [ { nome: "KitKat", preco: 4.50 }, { nome: "Monster", desconto: 20 } ] },
+];
+
 /* ===== CÓDIGO (não precisa mexer daqui para baixo) ===== */
 const brl = v => "R$ " + v.toFixed(2).replace(".", ",");
 const $ = id => document.getElementById(id);
 const lista = $("cardapio");
 const btnPedido = $("btn-pedido");
+const norm = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 // Data e dia da semana de hoje (?dia=3 na URL simula um dia, só para testes)
 const params = new URLSearchParams(location.search);
@@ -84,12 +109,39 @@ const vigente = o => {
   return true;
 };
 
+
+// Empresas com desconto valendo hoje e escolha guardada no aparelho do cliente
+const lerEmpresa = () => { try { return localStorage.getItem("ob-empresa"); } catch { return null; } };
+const salvarEmpresa = v => { try { localStorage.setItem("ob-empresa", v); } catch {} };
+const empresasHoje = EMPRESAS_ATIVO ? EMPRESAS.filter(e => e.ativo !== false && vigente(e)) : [];
+let empresaAtual = empresasHoje.find(e => e.nome === lerEmpresa()) || null;
+
+const arred = v => Math.round(v * 100) / 100;
+function precoEmpresa(p, e) {
+  if (!e) return null;
+  const regra = (e.itens || []).find(r => norm(r.nome) === norm(p.nome));
+  let v = null;
+  if (regra) v = regra.preco != null ? regra.preco : regra.desconto != null ? p.normal * (1 - regra.desconto / 100) : null;
+  else if (e.desconto) v = p.normal * (1 - e.desconto / 100);
+  return v == null ? null : arred(v);
+}
+// Preço final = o MENOR entre normal, oferta e desconto da empresa
+function precoFinal(p) {
+  let preco = p.normal;
+  if (p.ofertaPreco != null && p.ofertaPreco < preco) preco = p.ofertaPreco;
+  const ve = precoEmpresa(p, empresaAtual);
+  if (ve != null && ve < preco) preco = ve;
+  return { preco, de: preco < p.normal ? p.normal : null };
+}
+
 const itens = PRODUTOS.filter(p => p.ativo !== false).map(p => {
   const sabores = (p.sabores || []).map(s => typeof s === "string" ? { nome: s } : s);
   const esgotado = p.esgotado === true || (sabores.length > 0 && sabores.every(s => s.esgotado === true));
   const promo = vigente(p.promo) ? p.promo : null;
   const ofertaOn = vigente(p.oferta) && p.oferta.preco < p.preco;
-  return { ...p, sabores, esgotado, promo, preco: ofertaOn ? p.oferta.preco : p.preco, precoDe: ofertaOn ? p.preco : null };
+  const base = { ...p, sabores, esgotado, promo, normal: p.preco, ofertaPreco: ofertaOn ? p.oferta.preco : null };
+  const r = precoFinal(base);
+  return { ...base, preco: r.preco, precoDe: r.de };
 });
 const disponiveis = p => p.sabores.filter(s => !s.esgotado).length;
 
@@ -121,6 +173,7 @@ function textoPromo(p, q) {
   const economia = qtd * p.preco - preco;
   if (q >= qtd) {
     const eco = q * p.preco - totalItem(p, q);
+    if (eco <= 0) return { texto: "Seu preço já é melhor que a promoção", ativa: false };
     return { texto: `Promoção aplicada! Você economiza ${brl(eco)}`, ativa: true };
   }
   if (q > 0) return { texto: `Leve mais ${qtd - q} e pague ${brl(preco)} nos ${qtd}`, ativa: false };
@@ -158,7 +211,7 @@ itens.forEach((p, i) => {
     <div class="item-texto">
       <div class="item-nome">${p.nome}</div>
       ${p.descricao ? `<div class="item-desc">${p.descricao}</div>` : ""}
-      ${precoHtml(p)}
+      <div class="item-precos" id="pr${i}">${precoHtml(p)}</div>
       ${temSabores(p) && !p.esgotado ? `<button type="button" class="item-sabores" id="l${i}" data-abrir="${i}">Ver sabores (${disponiveis(p)})</button>` : ""}
       ${p.promo && !p.esgotado ? `<div class="item-promo" id="p${i}">${textoPromo(p, 0).texto}</div>` : ""}
     </div>
@@ -266,7 +319,7 @@ function atualizar() {
   btnPedido.setAttribute("aria-disabled", n ? "false" : "true");
   if (!n) { btnPedido.removeAttribute("href"); return; }
   const linhas = escolhidos.map(x => {
-    const promo = x.p.promo && x.q >= x.p.promo.qtd ? " (promoção)" : "";
+    const promo = x.p.promo && totalItem(x.p, x.q) < x.p.preco * x.q ? " (promoção)" : "";
     const desc = x.p.descricao ? " (" + x.p.descricao + ")" : "";
     const sub = temSabores(x.p) ? resumoSabores(x.i).map(s => `\n   • ${s}`).join("") : "";
     return `${x.q}x ${x.p.nome}${desc} — ${brl(totalItem(x.p, x.q))}${promo}${sub}`;
@@ -274,12 +327,12 @@ function atualizar() {
   const economia = cheio - total;
   const msg = "Olá! Quero fazer um pedido:\n\n" + linhas.join("\n") +
     (economia > 0 ? `\n\nEconomia em promoções: ${brl(economia)}` : "") +
+    (empresaAtual ? `\nDesconto da empresa: ${empresaAtual.nome}` : "") +
     `\n\n*Total: ${brl(total)}*`;
   btnPedido.href = link(msg);
 }
 
 /* ===== BUSCA E FILTROS ===== */
-const norm = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const filtro = { texto: "", tipo: "", precoMax: null, soPromo: false };
 
 function passa(p, f) {
@@ -397,4 +450,74 @@ $("aviso-ok").addEventListener("click", () => {
   $("busca").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-proximoAviso();
+/* ===== EMPRESAS: PERGUNTA, FAIXA E PREÇOS ===== */
+const modalEmp = $("empresa"), radios = $("empresa-radios"), btnEmp = $("empresa-ok");
+let aoFecharEmpresa = null, perguntaInicial = false;
+const descEmpresa = e => e.descricao || (e.desconto ? `${e.desconto}% em todo o cardápio` : "Descontos em itens selecionados");
+
+// Recalcula e redesenha preços, promoções e total (as quantidades escolhidas são mantidas)
+function repreco() {
+  itens.forEach((p, i) => {
+    const r = precoFinal(p);
+    p.preco = r.preco; p.precoDe = r.de;
+    $("pr" + i).innerHTML = precoHtml(p);
+    if (p.promo && !p.esgotado) {
+      const t = textoPromo(p, qtds[i]), el = $("p" + i);
+      el.textContent = t.texto;
+      el.classList.toggle("ativa", t.ativa);
+    }
+  });
+  atualizar();
+  aplicarFiltros();
+}
+
+function desenharFaixa() {
+  const f = $("faixa-empresa");
+  f.hidden = empresasHoje.length === 0;
+  if (f.hidden) return;
+  f.classList.toggle("ativa", !!empresaAtual);
+  $("faixa-texto").textContent = empresaAtual
+    ? `Desconto ${empresaAtual.nome}: ${descEmpresa(empresaAtual)}`
+    : "Trabalha em uma empresa com desconto hoje?";
+  $("faixa-trocar").textContent = empresaAtual ? "Trocar" : "Escolher";
+}
+
+function abrirEmpresa(aoFechar, inicial) {
+  aoFecharEmpresa = aoFechar || null;
+  perguntaInicial = !!inicial;
+  radios.innerHTML = empresasHoje.map((e, k) => `
+    <label class="radio"><input type="radio" name="empresa" value="${k}"${empresaAtual === e ? " checked" : ""}>
+      <span><strong>${e.nome}</strong><small>${descEmpresa(e)}</small></span></label>`).join("") + `
+    <label class="radio"><input type="radio" name="empresa" value="-"><span><strong>Nenhuma dessas</strong></span></label>`;
+  btnEmp.disabled = !radios.querySelector("input:checked");
+  modalEmp.hidden = false;
+  document.body.style.overflow = "hidden";
+  (radios.querySelector("input:checked") || radios.querySelector("input")).focus();
+}
+
+function fecharEmpresa(valor) {      // valor: "0", "1"... ou "-"; undefined = fechou sem escolher
+  modalEmp.hidden = true;
+  document.body.style.overflow = "";
+  if (valor !== undefined) {
+    empresaAtual = valor === "-" ? null : empresasHoje[+valor];
+    salvarEmpresa(empresaAtual ? empresaAtual.nome : "-:" + dataHoje);
+    repreco();
+  } else if (perguntaInicial) {
+    salvarEmpresa("-:" + dataHoje);  // fechou sem responder: não pergunta de novo hoje
+  }
+  desenharFaixa();
+  const cb = aoFecharEmpresa; aoFecharEmpresa = null;
+  if (cb) cb();
+}
+
+radios.addEventListener("change", () => { btnEmp.disabled = false; });
+btnEmp.addEventListener("click", () => fecharEmpresa(radios.querySelector("input:checked").value));
+modalEmp.addEventListener("click", e => { if (e.target.closest("[data-fechar-empresa]")) fecharEmpresa(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !modalEmp.hidden) fecharEmpresa(); });
+$("faixa-trocar").addEventListener("click", () => abrirEmpresa(null, false));
+
+desenharFaixa();
+const guardada = lerEmpresa();
+const jaRespondeu = guardada === "-:" + dataHoje || EMPRESAS.some(e => e.nome === guardada);
+if (empresasHoje.length && (params.has("empresa") || !jaRespondeu)) abrirEmpresa(proximoAviso, true);
+else proximoAviso();
