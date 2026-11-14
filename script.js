@@ -33,7 +33,7 @@ const PRODUTOS = [
   { nome: "Doritos", descricao: "120g", tipo: "Salgadinhos", preco: 14.90, imagem: "https://images.tcdn.com.br/img/img_prod/1176430/salgadinho_doritos_queijo_nacho_120g_18849_1_37da41f31446d05e392f9f74a3fd4f1d.png", promo: null, ativo: true },
   { nome: "Batata Lays", descricao: "62g", sabores: [{nome: "Clássica", esgotado: true }, "Sour Cream"], tipo: "Salgadinhos", preco: 13.80, imagem: "https://hiperideal.vtexassets.com/arquivos/ids/235268/2204200.png", promo: null, ativo: true },
   { nome: "Torcida", descricao: "60g", sabores: ["Churrasco", {nome: "Queijo", esgotado: true}], tipo: "Salgadinhos", preco: 4.30, imagem: "https://gddistribuidor.agilecdn.com.br/5904.png", promo: null, ativo: true },
-  { nome: "KitKat", descricao: "", esgotado: true, tipo: "Chocolates", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
+  { nome: "KitKat", descricao: "", tipo: "Chocolates", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
   { nome: "Trento", sabores: ["Massimo Chocolate 25g", "Chocolate 29g", "Duo 29g (Chocolate Branco e ao Leite)"], descricao: "", tipo: "Chocolates", preco: 4.00, imagem: "https://phygital-files.mercafacil.com/catalogo/uploads/produto/wafer_recheio_chocolate_cobertura_chocolate_ao_leite_trento_pacote_32g_3e32eaa4-abe7-41c1-b3b1-8b01c35f4108.png", promo: null, ativo: true },
   { nome: "Ouro Branco", esgotado: true, descricao: "", tipo: "Chocolates", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: true },
 ];
