@@ -36,7 +36,7 @@ const PRODUTOS = [
   { nome: "Fini", esgotado: true, descricao: "15g", sabores:["Beijo"], tipo: "Doces", preco: 2.00, imagem: "https://intranet.multquimica.com.br/wp-content/uploads/2025/08/finibeijos.png", ativo: true }, 
   { nome: "Ouro Branco", esgotado: true, descricao: "", tipo: "Chocolates", preco: 3.00, imagem: "https://assets.jokrtech.com/small_PROD_150802003_P1_28e61fdaa9.png", promo: { qtd: 4, preco: 10.00 }, ativo: false },
   { nome: "Trento", sabores: ["Chocolate 29g", "Duo 29g (Chocolate Branco e ao Leite)"], descricao: "", tipo: "Chocolates", preco: 4.00, imagem: "https://phygital-files.mercafacil.com/catalogo/uploads/produto/wafer_recheio_chocolate_cobertura_chocolate_ao_leite_trento_pacote_32g_3e32eaa4-abe7-41c1-b3b1-8b01c35f4108.png", promo: null, ativo: true },
-  { nome: "KitKat", descricao: "", tipo: "Chocolates", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
+  { nome: "KitKat", esgotado: true, descricao: "", tipo: "Chocolates", preco: 6.00, imagem: "https://assets.ibecom.com.br/ib.item.image.large/l-d2e29f027e724f08b63e2bb553cf7f0e.png", promo: { qtd: 2, preco: 10.00 }, ativo: true },
 ];
 
 /* ===== AVISOS (POP-UP) =====
